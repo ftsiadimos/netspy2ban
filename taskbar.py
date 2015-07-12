@@ -24,7 +24,7 @@ class MyTaskBarIcon(wx.TaskBarIcon):
         wx.TaskBarIcon.__init__(self)
 
         self.frame = frame
-        self.SetIcon(wx.Icon("/usr/local/bin/icons/netspy2ban.ico", wx.BITMAP_TYPE_ICO), 'NetSpy2Ban')
+        self.SetIcon(wx.Icon("/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.ico", wx.BITMAP_TYPE_ICO), 'NetSpy2Ban')
         self.Bind(wx.EVT_MENU, self.OnTaskBarActivate, id=1)
         self.Bind(wx.EVT_MENU, self.OnTaskBarDeactivate, id=2)
         self.Bind(wx.EVT_MENU, self.OnTaskBarClose, id=3)

@@ -9,7 +9,7 @@
 <action id="netcon">
 <message>Authentication is required to run the NetSpy2ban</message>
 <icon_name>netcon</icon_name>
-<annotate key="org.freedesktop.policykit.exec.path">/usr/local/bin/netspy2ban</annotate>
+<annotate key="org.freedesktop.policykit.exec.path">/usr/lib/python2.7/site-packages/netspy2ban/netspy2ban</annotate>
 <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
 <defaults>
  <allow_any>no</allow_any>

@@ -36,7 +36,7 @@ class Mainpy(wx.Frame):
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title, style=wx.MINIMIZE_BOX | wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.CLIP_CHILDREN, size=(650, 550))
 
-        icon1 = wx.Icon("/usr/local/bin/icons/netspy2ban.png", wx.BITMAP_TYPE_ICO)
+        icon1 = wx.Icon("/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png", wx.BITMAP_TYPE_ICO)
         self.SetIcon(icon1)
         # Creating the Menubar
         ####################################################################
@@ -63,12 +63,12 @@ class Mainpy(wx.Frame):
         ####################################################################
         vbox = wx.BoxSizer(wx.VERTICAL)
         toolbar = wx.ToolBar(self, -1, style=wx.TB_HORIZONTAL|wx.TB_FLAT|wx.TB_TEXT)
-        toolbar.AddLabelTool(1, "Status", wx.Bitmap("/usr/local/bin/icons/Home.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Home", "")
+        toolbar.AddLabelTool(1, "Status", wx.Bitmap("/usr/lib/python2.7/site-packages/netspy2ban/icons/Home.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Home", "")
         toolbar.AddSeparator()        
-        toolbar.AddLabelTool(2, "Networking", wx.Bitmap("/usr/local/bin/icons/net.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Netwotking", "")
-        toolbar.AddLabelTool(3, "Fail2ban", wx.Bitmap("/usr/local/bin/icons/lock.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Fail2ban", "")  
+        toolbar.AddLabelTool(2, "Networking", wx.Bitmap("/usr/lib/python2.7/site-packages/netspy2ban/icons/net.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Netwotking", "")
+        toolbar.AddLabelTool(3, "Fail2ban", wx.Bitmap("/usr/lib/python2.7/site-packages/netspy2ban/icons/lock.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Fail2ban", "")  
         toolbar.AddSeparator() 
-        toolbar.AddLabelTool(7, "Exit", wx.Bitmap("/usr/local/bin/icons/stop.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Exit", "")
+        toolbar.AddLabelTool(7, "Exit", wx.Bitmap("/usr/lib/python2.7/site-packages/netspy2ban/icons/stop.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Exit", "")
         toolbar.Realize()
         vbox.Add(toolbar, 0, wx.EXPAND)
         self.Bind(wx.EVT_TOOL, self.OnHome, id=1)

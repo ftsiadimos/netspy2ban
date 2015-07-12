@@ -2,6 +2,6 @@
 Comment=NetSpy2Ban
 Terminal=false
 Name=NetSpy2Ban
-Exec=/usr/local/bin/run.py
+Exec=/usr/bin/netspy2start
 Type=Application
-Icon=/usr/local/bin/icons/netspy2ban.png
+Icon=/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png
