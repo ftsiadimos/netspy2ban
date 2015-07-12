@@ -1,4 +1,4 @@
-<h1 class='liketext'><img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/netspy2ban.png" width="40" height="40"  margin-left: 4px alt="Logo" /><h1>NetSpy2Ban</h1>
+<h1 class='liketext'><img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/netspy2ban.png" width="40" height="40"  margin-left: 4px alt="Logo" />NetSpy2Ban</h1>
  
 NetSpy2Ban is a graphic user interface program that allows a real time view of your network connections.
 
