@@ -240,4 +240,4 @@ class Logs_Class(wx.Panel):
 
 
 if __name__ == "__main__":
-    print "This is a module for netcon.py"
+    print "This is a module for netspy2ban.py"

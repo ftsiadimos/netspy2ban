@@ -5,7 +5,7 @@
 
 <policyconfig>
 <vendor>Netcon</vendor>
-<vendor_url>https://wiki.gnome.org/Apps/NetSpy2Ban</vendor_url>
+<vendor_url>https://github.com/ftsiadimos/netspy2ban</vendor_url>
 <action id="netcon">
 <message>Authentication is required to run the NetSpy2ban</message>
 <icon_name>netcon</icon_name>
