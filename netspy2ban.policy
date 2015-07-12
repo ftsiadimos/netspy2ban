@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+
+<policyconfig>
+<vendor>Netcon</vendor>
+<vendor_url>https://wiki.gnome.org/Apps/NetSpy2Ban</vendor_url>
+<action id="netcon">
+<message>Authentication is required to run the NetSpy2ban</message>
+<icon_name>netcon</icon_name>
+<annotate key="org.freedesktop.policykit.exec.path">/usr/local/bin/netspy2ban</annotate>
+<annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+<defaults>
+ <allow_any>no</allow_any>
+ <allow_inactive>auth_admin</allow_inactive>
+ <allow_active>auth_admin</allow_active>
+</defaults>
+</action>
+
+</policyconfig>
+

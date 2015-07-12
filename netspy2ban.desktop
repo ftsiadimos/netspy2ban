@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=NetSpy2Ban
+Terminal=false
+Name=NetSpy2Ban
+Exec=/usr/local/bin/run.py
+Type=Application
+Icon=/usr/local/bin/icons/netspy2ban.png
