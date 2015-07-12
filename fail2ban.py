@@ -67,7 +67,8 @@ class Logs_Class(wx.Panel):
         butapply.Bind(wx.EVT_BUTTON, self.applybutton)
 
         distros = self.parser.sections()
-        distros.remove('INCLUDES')
+	if 'INCLUDES' in distros: 
+        	distros.remove('INCLUDES')
         combox = wx.ComboBox(self, choices=distros, style=wx.CB_READONLY)
         combox.SetSelection(0)        
         combox.Bind(wx.EVT_COMBOBOX, self.onselect)
