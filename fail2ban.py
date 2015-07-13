@@ -1,20 +1,10 @@
 #!/usr/bin/env python
-""" Fail2ban Gui controler"""
+""" Fail2Ban GUI Controller """
 # -*- coding: utf-8 -*-
 #
 # Copyright 2015 Fotios Tsiadimos
-#
-# This program is free software: you can redistribute it and/or modify it
-# under the terms of the GNU General Public License version 3, as published
-# by the Free Software Foundation.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranties of
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
-# PURPOSE.  See the GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program.  If not, see <http://www.gnu.org/licenses/>.
+# Licensed under the terms of the GPL License
+# (see License file for details)
 
 import wx
 import sys
@@ -60,7 +50,7 @@ class Logs_Class(wx.Panel):
         lab2 = wx.StaticText(self, 1, "Find-time:")
         self.box2 = wx.SpinCtrl(self, value='1', size=(1, -1), min=1, max=12000)
         self.box2.SetValue(findti)
-        lab3 = wx.StaticText(self, 1, "Range-try:")
+        lab3 = wx.StaticText(self, 1, "Ban-after:")
         self.box3 = wx.SpinCtrl(self, value='1', size=(1, -1), min=1, max=12)
         self.box3.SetValue(sshmaxtry)
         butapply= wx.Button(self, label='Apply', pos=(550, 15))
@@ -73,7 +63,7 @@ class Logs_Class(wx.Panel):
         combox.SetSelection(0)        
         combox.Bind(wx.EVT_COMBOBOX, self.onselect)
 
-        txtheader = wx.StaticText(self, -1, 'Fail2ban', (0, 0))
+        txtheader = wx.StaticText(self, -1, 'Fail2Ban', (0, 0))
         font = wx.Font(16, wx.DEFAULT, wx.NORMAL, wx.BOLD)
         font1 = wx.Font(11, wx.DEFAULT, wx.NORMAL, wx.BOLD)
         txtheader.SetFont(font)

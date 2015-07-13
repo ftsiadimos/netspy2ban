@@ -3,18 +3,8 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2015 Fotios Tsiadimos
-#
-# This program is free software: you can redistribute it and/or modify it
-# under the terms of the GNU General Public License version 3, as published
-# by the Free Software Foundation.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranties of
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
-# PURPOSE.  See the GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program.  If not, see <http://www.gnu.org/licenses/>.
+# Licensed under the terms of the GPL License
+# (see License file for details)
 
 import sys
 import os
@@ -117,12 +107,26 @@ class Mainpy(wx.Frame):
         self.Destroy()
         self.tskic.Destroy()
         
-    def OnAbout(self, event):
-        """ A message dialog box with an OK button. wx.OK is a standard ID in wxWidgets. """
-        dlg = wx.MessageDialog(self, "NetSpy2Ban is a graphical tool to monitor\n your system\n Version: 1.00", "About NetSpy2Ban", wx.OK)
-        dlg.ShowModal() # Show it
-        dlg.Destroy() # finally destroy it when finished.
-
+   # def OnAbout(self, event):
+    #    """ A message dialog box with an OK button. wx.OK is a standard ID in wxWidgets. """
+     #   dlg = wx.MessageDialog(self, "NetSpy2Ban is a graphical tool to monitor\n your system\n Version: 1.00", "About NetSpy2Ban", wx.OK)
+     #   dlg.ShowModal() # Show it
+     #   dlg.Destroy() # finally destroy it when finished.
+    def onAbout(self, event):
+    	info = wx.AboutDialogInfo()
+    	info.Name = "My About Box"
+    	info.Version = "0.0.1 Beta"
+    	info.Copyright = "(C) 2008 Python Geeks Everywhere"
+    	info.Description = wordwrap(
+        "This is an example application that shows how to create "
+        "different kinds of About Boxes using wxPython!",
+        350, wx.ClientDC(self.panel))
+    	info.WebSite = ("http://www.pythonlibrary.org", "My Home Page")
+    	info.Developers = ["Mike Driscoll"]
+    	info.License = wordwrap("Completely and totally open source!", 500,
+                            wx.ClientDC(self.panel))
+    	# Show the wx.AboutBox
+    	wx.AboutBox(info)
 class MyApp(wx.App):
     def OnInit(self):
         frame = Mainpy(None, -1, 'NetSpy2ban')
