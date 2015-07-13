@@ -1,0 +1,153 @@
+#!/usr/bin/python
+""" Main Panel """
+# -*- coding: utf-8 -*-
+#
+# Copyright 2015 Fotios Tsiadimos
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
+# by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+# PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import sys
+import os
+from wx.lib.wordwrap import wordwrap
+try:
+    import wx
+except IOError:
+    sys.exit("\nYou need to install the wx library.\n")
+from taskbar import MyTaskBarIcon
+from mainpanel import Main_Class
+from networkpanel import Network_Class
+from fail2ban import Logs_Class
+
+if not os.geteuid() == 0:
+    sys.exit("\nOnly root can run this program. --> sudo python netspy2ban.py <--\n")
+
+class Mainpy(wx.Frame):
+    """ Main Frame """
+    def __init__(self, parent, id, title):
+        wx.Frame.__init__(self, parent, id, title, style=wx.MINIMIZE_BOX | wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.CLIP_CHILDREN, size=(650, 550))
+	
+	self.panel = wx.Panel(self, -1)
+	sizer = wx.BoxSizer(wx.VERTICAL)
+	self.createMenu()
+        icon1 = wx.Icon("/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png", wx.BITMAP_TYPE_ICO)
+        self.SetIcon(icon1)
+        
+        # Creating the Toolbar
+        ####################################################################
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        toolbar = wx.ToolBar(self, -1, style=wx.TB_HORIZONTAL|wx.TB_FLAT|wx.TB_TEXT)
+        toolbar.AddLabelTool(1, "Status", wx.Bitmap("/usr/lib/python2.7/site-packages/netspy2ban/icons/Home.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Home", "")
+        toolbar.AddSeparator()        
+        toolbar.AddLabelTool(2, "Networking", wx.Bitmap("/usr/lib/python2.7/site-packages/netspy2ban/icons/net.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Netwotking", "")
+        toolbar.AddLabelTool(3, "Fail2ban", wx.Bitmap("/usr/lib/python2.7/site-packages/netspy2ban/icons/lock.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Fail2ban", "")  
+        toolbar.AddSeparator() 
+        toolbar.AddLabelTool(7, "Exit", wx.Bitmap("/usr/lib/python2.7/site-packages/netspy2ban/icons/stop.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Exit", "")
+        toolbar.Realize()
+        vbox.Add(toolbar, 0, wx.EXPAND)
+        self.Bind(wx.EVT_TOOL, self.OnHome, id=1)
+        self.Bind(wx.EVT_TOOL, self.OnNet, id=2)
+        self.Bind(wx.EVT_TOOL, self.OnLogs, id=3)
+        self.Bind(wx.EVT_TOOL, self.OnExit, id=7)
+        ####################################################################        
+        #Ending Toolbar
+        self.tskic = MyTaskBarIcon(self)  #Calling the taskbar
+        self.Bind(wx.EVT_CLOSE, self.OnClose) #Closing button on window
+        self.panel0 = Main_Class(self)
+        vbox.Add(self.panel0, -1, wx.EXPAND)
+
+        self.panel1 = Network_Class(self)       
+        vbox.Add(self.panel1, -1, wx.EXPAND)
+        
+        self.panel2 = Logs_Class(self)       
+        vbox.Add(self.panel2, -1, wx.EXPAND)        
+
+        self.SetSizer(vbox)
+        self.Centre()
+        self.panel0.showyourself() 
+	
+	#sizer.Add(self.panel)
+	#self.panel.SetSizer(sizer)
+
+    def createMenu(self):
+        """ Create the application's menu """
+        menubar = wx.MenuBar()
+
+        fileMenu = wx.Menu()
+        close_menu_item = fileMenu.Append(wx.NewId(),
+                                          "Close",
+                                          "Closes the application")
+        self.Bind(wx.EVT_MENU, self.onClose, close_menu_item)
+        menubar.Append(fileMenu, "File")
+
+        helpMenu = wx.Menu()
+        about_menu_item = helpMenu.Append(wx.NewId(),
+                                          "About",
+                                          "Opens the About Box")
+        self.Bind(wx.EVT_MENU, self.onAboutDlg, about_menu_item)
+        menubar.Append(helpMenu, "Help")
+
+        self.SetMenuBar(menubar)
+    def onAboutDlg(self, event):
+        info = wx.AboutDialogInfo()
+	info.SetIcon(wx.Icon('/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png', wx.BITMAP_TYPE_PNG)) 
+        info.Name = "My About Box"
+        info.Version = "0.0.1 Beta"
+        info.Copyright = "(C) 2008 Python Geeks Everywhere"
+        info.Description = wordwrap(
+            "This is an example application that shows how to create "
+            "different kinds of About Boxes using wxPython!",
+            350, wx.ClientDC(self.panel))
+        info.WebSite = ("http://www.pythonlibrary.org", "My Home Page")
+        info.Developers = ["Mike Driscoll"]
+        info.License = wordwrap("Completely and totally open source!", 500,
+                                wx.ClientDC(self.panel))
+        wx.AboutBox(info)
+
+    def onClose(self, event):
+        self.Close()
+             
+    def OnHome(self, event):
+        self.panel1.Hide()
+        self.panel2.Hide()
+        self.panel0.showyourself()    
+
+    def OnNet(self, event):
+        self.panel0.Hide()
+        self.panel2.Hide()
+        self.panel1.showyourself()
+
+    def OnLogs(self, event):
+        self.panel1.Hide()
+        self.panel0.Hide()
+        self.panel2.showyourself()
+    
+    def OnClose(self, event):
+        if not self.shst.IsChecked():
+            self.Bind(wx.EVT_CLOSE, self.OnExit)
+        else:
+            self.Hide()
+        
+    def OnExit(self, event):
+        self.Destroy()
+        self.tskic.Destroy()
+
+class MyApp(wx.App):
+    def OnInit(self):
+        frame = Mainpy(None, -1, 'NetSpy2ban')
+        frame.Show(True)
+        frame.Center()
+        return True
+
+if __name__ == "__main__":
+    app = MyApp()
+    app.MainLoop()
