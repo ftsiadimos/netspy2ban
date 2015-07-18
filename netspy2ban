@@ -102,14 +102,14 @@ class Mainpy(wx.Frame):
 	info.SetIcon(wx.Icon('/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png', wx.BITMAP_TYPE_PNG)) 
         info.Name = "NetSpy2Ban"
         info.Version = "1.0.1"
-        info.Copyright = "(C) 20015 Fotios Tsiadimos"
+        info.Copyright = "(C) 2015 Fotios Tsiadimos"
         info.Description = wordwrap(
             "GUI For Fail2Ban and Networking Tool  "
             " NetSpy2Ban includes a graphic user interface to provide user-friendly functionality for the Fail2Ban service.",
             350, wx.ClientDC(self.panel0))
         info.WebSite = ("https://github.com/ftsiadimos/netspy2ban", "NetSpy2Ban Home Page")
         info.Developers = ["Fotios Tsiadimos"]
-        info.License = wordwrap("Completely and totally open source!", 500,
+        info.License = wordwrap("Licensed under the terms of the GPL License", 500,
                                 wx.ClientDC(self.panel0))
         wx.AboutBox(info)
 
