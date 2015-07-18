@@ -83,8 +83,12 @@ class Network_Class(wx.Panel):
             ipa = list_split[4].lstrip('dst=')
         for tcp_id, details1 in AA.iteritems():
             if ipa  in details1:
-                dd = details1[4]
-                dd1 = details1[5]
+                if details1[4] and details1[5]:
+                    dd = details1[4]
+                    dd1 = details1[5]
+                else:
+                    dd = "Unknown"
+                    dd1 = "Unknown"
                 break
             else:
                 dd = "Unknown"
@@ -139,17 +143,18 @@ class Network_Class(wx.Panel):
         for details in cur_netstat:
             if details not in self.cur_view:
                 if details[2] == "ESTABLISHED":
-                    i = self.tab1.InsertStringItem(sys.maxint, str(details[0]))
-                    self.tab1.SetStringItem(i, 0, details[3].lstrip('scr='))
-                    self.tab1.SetStringItem(i, 1, details[4].lstrip('dst='))
-                    self.tab1.SetStringItem(i, 2, details[5].lstrip('dport='))
-                    self.tab1.SetStringItem(i, 3, details[1])
-                    self.cur_view.append(details)
-                    self.myRowDict[i] = details
-                    if self.myhost != details[3].lstrip('scr='):
-                        source = details[3].lstrip('scr=')
-                        port = details[5].lstrip('dport=')
-                        winmesg.toster(self, "Server {0} is trying to connect via port {1}".format(source, port))
+                    if "127.0.0.1" not in details[3]:    
+                        i = self.tab1.InsertStringItem(sys.maxint, str(details[0]))
+                        self.tab1.SetStringItem(i, 0, details[3].lstrip('scr='))
+                        self.tab1.SetStringItem(i, 1, details[4].lstrip('dst='))
+                        self.tab1.SetStringItem(i, 2, details[5].lstrip('dport='))
+                        self.tab1.SetStringItem(i, 3, details[1])
+                        self.cur_view.append(details)
+                        self.myRowDict[i] = details
+                        if self.myhost != details[3].lstrip('scr='):
+                            source = details[3].lstrip('scr=')
+                            port = details[5].lstrip('dport=')
+                            winmesg.toster(self, "Server {0} is trying to connect via port {1}".format(source, port))
         count_rows = self.tab1.GetItemCount()
         for row in range(count_rows):
             if row % 2:
