@@ -128,12 +128,13 @@ class Mainpy(wx.Frame):
         self.panel1.Hide()
         self.panel0.Hide()
         self.panel2.showyourself()
-    
+    def onhide(self, event):
+	self.Hide() 
     def OnClose(self, event):
         if not self.shst.IsChecked():
             self.Bind(wx.EVT_CLOSE, self.OnExit)
         else:
-            self.Hide()
+            self.Bind(wx.EVT_CLOSE, self.onhide)
     def OnNote(self, event):
 	if not self.note.IsChecked():
 		tost.a=0
