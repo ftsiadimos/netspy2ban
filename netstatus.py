@@ -98,8 +98,8 @@ def netstat():
 
         est_ports.append(port)
         result[tcp_id] = [l_host,r_host,str(port),service, exe, pid]
-
+        
     return result
-
+    
 if __name__ == "__main__":
     print "This is a module for netspy2ban.py"

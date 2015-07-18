@@ -18,7 +18,7 @@ UPTIME_PATH = '/proc/uptime'
 class Main_Class(wx.Panel):
     """Netwok cards."""
     def __init__(self, parent, idwx= -1):
-
+        """ Initialize the main panel """
         wx.Panel.__init__(self, parent, idwx)
         
         self.lasttime = 1
@@ -62,12 +62,15 @@ class Main_Class(wx.Panel):
         sizer.Add(self.tab1, 0,  wx.EXPAND) 
       
         self.SetSizer(sizer)  
+
     def uptime(self):
-	with open(UPTIME_PATH) as f:
-		uptime_seconds = float(f.readline().split()[0])
-		z = str(timedelta(seconds = uptime_seconds))
-		z =  z.split('.')
-	return z[0]
+        """ show time """
+        with open(UPTIME_PATH) as f:
+            uptime_seconds = float(f.readline().split()[0])
+            z = str(timedelta(seconds = uptime_seconds))
+            z =  z.split('.')
+        return z[0]
+
     def ontimer(self, event):
         """ Refresh and show network card details."""
         net_list = []
@@ -85,20 +88,20 @@ class Main_Class(wx.Panel):
                 net_count = 0          
                 timedelta = time.time() - self.lasttime
                 self.lasttime = time.time()
-                for listrow in net_list:          
-    
+                for listrow in net_list:
+
                     bbin = int(listrow[1])
                     bout = int(listrow[9])
-                    
-                    self.speedin[net_count] = round((bbin-int(self.lastbin[net_count]))/(1024*timedelta), 2)                   
+
+                    self.speedin[net_count] = round((bbin-int(self.lastbin[net_count]))/(1024*timedelta), 2)
                     self.speedout[net_count] = round((bout-int(self.lastbout[net_count]))/(1024*timedelta), 2)
-                        
+
                     self.lastbin[net_count] = bbin
                     self.lastbout[net_count] = bout
-    
-                    download = str(round(float(bbin /1024) / (1024), 2))               
+
+                    download = str(round(float(bbin /1024) / (1024), 2))
                     upload = str(round(float(bout /1024) / (1024), 2))
-        
+
                     i = self.tab1.InsertStringItem(sys.maxint, str(listrow[0]))
                     self.tab1.SetStringItem(i, 1, download)
                     self.tab1.SetStringItem(i, 2, upload)
@@ -109,13 +112,13 @@ class Main_Class(wx.Panel):
                     self.lastbout.extend([net_count])
                     self.speedin.extend([net_count])
                     self.speedout.extend([net_count])
-                    
+
             self.tab1.Thaw()
         except IOError:
             error_msg =  "Didn't find dev in /proc/net folder."
             print error_msg
             self.ShowError(self, error_msg)
-            
+
     def ShowError(self, event, error_msg):
         dial = wx.MessageDialog(None, error_msg, 'Error', 
             wx.OK | wx.ICON_ERROR)

@@ -13,7 +13,7 @@ try:
     import wx
 except IOError:
     sys.exit("\nYou need to install the wx library.\n")
-import tost
+import winmesg
 from taskbar import MyTaskBarIcon
 from mainpanel import Main_Class
 from networkpanel import Network_Class
@@ -30,6 +30,8 @@ class Mainpy(wx.Frame):
         icon1 = wx.Icon("/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png", wx.BITMAP_TYPE_ICO)
         self.SetIcon(icon1)
         
+	#panel = wx.Panel(self)
+	#panel = MyPanel(self)
         # Creating the Toolbar
         ####################################################################
         vbox = wx.BoxSizer(wx.VERTICAL)
@@ -98,15 +100,15 @@ class Mainpy(wx.Frame):
     def onAboutDlg(self, event):
         info = wx.AboutDialogInfo()
 	info.SetIcon(wx.Icon('/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png', wx.BITMAP_TYPE_PNG)) 
-        info.Name = "My About Box"
-        info.Version = "0.0.1 Beta"
-        info.Copyright = "(C) 2008 Python Geeks Everywhere"
+        info.Name = "NetSpy2Ban"
+        info.Version = "1.0.1"
+        info.Copyright = "(C) 20015 Fotios Tsiadimos"
         info.Description = wordwrap(
-            "This is an example application that shows how to create "
-            "different kinds of About Boxes using wxPython!",
+            "GUI For Fail2Ban and Networking Tool  "
+            " NetSpy2Ban includes a graphic user interface to provide user-friendly functionality for the Fail2Ban service.",
             350, wx.ClientDC(self.panel0))
-        info.WebSite = ("http://www.pythonlibrary.org", "My Home Page")
-        info.Developers = ["Mike Driscoll"]
+        info.WebSite = ("https://github.com/ftsiadimos/netspy2ban", "NetSpy2Ban Home Page")
+        info.Developers = ["Fotios Tsiadimos"]
         info.License = wordwrap("Completely and totally open source!", 500,
                                 wx.ClientDC(self.panel0))
         wx.AboutBox(info)
@@ -137,12 +139,18 @@ class Mainpy(wx.Frame):
             self.Bind(wx.EVT_CLOSE, self.onhide)
     def OnNote(self, event):
 	if not self.note.IsChecked():
-		tost.a=0
+		winmesg.popdefault=0
 	else:
-		tost.a=1      
+		winmesg.popdefault=1      
     def OnExit(self, event):
         self.Destroy()
         self.tskic.Destroy()
+
+class MyPanel(wx.Panel):
+
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+	panel.Show()
 
 class MyApp(wx.App):
     def OnInit(self):

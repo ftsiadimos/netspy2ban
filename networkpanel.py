@@ -3,20 +3,22 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2015 Fotios Tsiadimos
+# Licensed under the terms of the GPL License
+# (see License file for details)
 
 import wx
 import socket
 import sys
 import netstatus
 import subprocess
-import tost
+import winmesg
 
 FILE_PATH = '/proc/net/nf_conntrack'
 
 class Network_Class(wx.Panel):
     """Network connections"""
-    def __init__(self, parent, idwx= -1):
-	subprocess.call(['/usr/bin/notify-send', 'App Title', 'Message'])
+    def __init__(self, parent, idwx=-1):
+        """ Initialize the networking panel """
         wx.Panel.__init__(self, parent, idwx)
         mastersizer = wx.BoxSizer(wx.VERTICAL)
         mastersizer.AddSpacer(15)
@@ -29,7 +31,7 @@ class Network_Class(wx.Panel):
         rowtopsizer.Add(txtheader, 3, wx.ALIGN_LEFT)
         rowtopsizer.Add((0, 0), 1)
         mastersizer.Add(rowtopsizer, 0, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=15)
-	
+
         self.host1 = wx.StaticText(self, -1, "Program")
         self.host2 = wx.StaticText(self, -1, "Pid")
         self.host11 = wx.StaticText(self, -1, "hostname")
@@ -52,43 +54,45 @@ class Network_Class(wx.Panel):
         self.host1.SetFont(font1)
         self.host2.SetFont(font1)
         self.host11.SetFont(font1)
-        newbox=wx.BoxSizer(wx.VERTICAL)
+        newbox = wx.BoxSizer(wx.VERTICAL)
         newbox.Add(self.host11, 1, wx.ALIGN_LEFT)
         newbox.Add(self.host1, 1, wx.LEFT)
         newbox.Add(self.host2, 1, wx.LEFT)
         mastersizer.Add(newbox, 0, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=15)
+
+        AA = netstatus.netstat()
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        self.myhost = (s.getsockname()[0])
+        s.close()
+
         self.SetSizer(mastersizer)
         self.Hide()
         self.cur_view = []
         self.mess = []
 
     def onItemSelected(self, event):
-        """"""
-        AA = netstatus.netstat()
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8",80))
-        ip = (s.getsockname()[0])
-        s.close()
-        list_split= []
+        """mouse click on rows"""
+        list_split = []
         currentItem = event.m_itemIndex
         for i in  self.cur_view[currentItem]:
-		list_split.append(i)
-        if ip ==  list_split[4].lstrip('dst='):
-		ipa = list_split[3].lstrip('scr=')
+            list_split.append(i)
+        if self.myhost == list_split[4].lstrip('dst='):
+            ipa = list_split[3].lstrip('scr=')
         else:
-		ipa = list_split[4].lstrip('dst=')
-        for tcp_id,details1 in AA.iteritems():
+            ipa = list_split[4].lstrip('dst=')
+        for tcp_id, details1 in AA.iteritems():
             if ipa  in details1:
-               dd =  details1[4]
-               dd1 = details1[5]
-               break
+                dd = details1[4]
+                dd1 = details1[5]
+                break
             else:
-               dd = "Unknown"
+                dd = "Unknown"
         try:
-		ipaa = socket.gethostbyaddr(ipa)
-		ipaa = ipaa[0]
+            ipaa = socket.gethostbyaddr(ipa)
+            ipaa = ipaa[0]
         except:
-		ipaa = 'Unknown'
+            ipaa = 'Unknown'
 
         self.host11.SetLabel(ipaa)
         self.host1.SetLabel(dd)
@@ -101,32 +105,27 @@ class Network_Class(wx.Panel):
             with open(FILE_PATH) as n_list:
                 for i in n_list:
                     list_split = i.split()
-		    if list_split[2] == "tcp":
-                   	 del list_split[0:3]
-                   	 por = list_split[6]
-                   	 por = por.lstrip('dport=')
-                   	 try:
-                         	service = socket.getservbyport(int(por))
-                         except:
-				service = 'Unknown'
-                         list_split[1] = service
-                         del list_split[7:]
-			 del list_split[5]
-                         net_list.append(list_split)
+                    if list_split[2] == "tcp":
+                        del list_split[0:3]
+                        por = list_split[6]
+                        por = por.lstrip('dport=')
+                        try:
+                            service = socket.getservbyport(int(por))
+                        except:
+                            service = 'Unknown'
+                        list_split[1] = service
+                        del list_split[7:]
+                        del list_split[5]
+                        net_list.append(list_split)
             return net_list
         except IOError:
-            error_msg =  "Didn't find nf_contrack in /proc/net folder."
+            error_msg = "Didn't find nf_contrack in /proc/net folder."
             print error_msg
             self.ShowError(self, error_msg)
 
 
     def _ontimer(self, event):
         """ Refresh and show network card details."""
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8",80))
-        ip = (s.getsockname()[0])
-        s.close()
-
         cur_netstat = self._ofile()
         cur_netstat.sort()
         self.tab1.Freeze()
@@ -147,10 +146,10 @@ class Network_Class(wx.Panel):
                     self.tab1.SetStringItem(i, 3, details[1])
                     self.cur_view.append(details)
                     self.myRowDict[i] = details
-		    if ip !=  details[3].lstrip('scr='):
-			ee = details[3].lstrip('scr=')
-			pp = details[5].lstrip('dport=')
-			tost.toster(self, "Server {0} is trying to connect via port {1}".format(ee, pp))
+                    if self.myhost != details[3].lstrip('scr='):
+                        source = details[3].lstrip('scr=')
+                        port = details[5].lstrip('dport=')
+                        winmesg.toster(self, "Server {0} is trying to connect via port {1}".format(source, port))
         count_rows = self.tab1.GetItemCount()
         for row in range(count_rows):
             if row % 2:
@@ -158,7 +157,6 @@ class Network_Class(wx.Panel):
             else:
                 self.tab1.SetItemBackgroundColour(row, "#E5E5E5")
                 self.tab1.SetBackgroundStyle(wx.LC_HRULES)
-
         self.tab1.Thaw()
 
     def ShowError(self, event, error_msg):

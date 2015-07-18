@@ -3,6 +3,8 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2015 Fotios Tsiadimos
+# Licensed under the terms of the GPL License
+# (see License file for details)
 
 import wx
 import sys
@@ -12,7 +14,7 @@ import shutil
 import subprocess
 import fileinput
 import commands
-import tost
+import winmesg
 from datetime import datetime
 
 FILE_PATH = '/var/log/fail2ban.log'
@@ -31,14 +33,17 @@ class Logs_Class(wx.Panel):
             subprocess.call(command, shell=False)
 
         wx.Panel.__init__(self, parent, idwx)
-	out = commands.getoutput('ps -A')
-	
+        out = commands.getoutput('ps -A')
+
         self.parser = ConfigParser.ConfigParser()
         self.parser.read(JAIL_PATH)
-	distros = self.parser.sections()
-	for i in distros:
-           if i not in out:
-		self.parser.set(i, 'enabled', 'false')
+        distros = self.parser.sections()
+        for i in distros:
+            if i not in out:
+                self.parser.set(i, 'enabled', 'false')
+        if 'INCLUDES' in distros:
+            distros.remove('INCLUDES')
+
         sshcheck = self.parser.getboolean('sshd', 'enabled')
         sshmaxtry = self.parser.getint('sshd', 'maxretry')
         banti = self.parser.getint('DEFAULT', 'bantime')
@@ -62,9 +67,6 @@ class Logs_Class(wx.Panel):
         butapply = wx.Button(self, label='Apply', pos=(550, 15))
         butapply.Bind(wx.EVT_BUTTON, self.applybutton)
 
-        if 'INCLUDES' in distros:
-            distros.remove('INCLUDES')
-		
         combox = wx.ComboBox(self, choices=distros, style=wx.CB_READONLY)
         combox.SetSelection(0)
         combox.Bind(wx.EVT_COMBOBOX, self.onselect)
@@ -140,22 +142,22 @@ class Logs_Class(wx.Panel):
 
     def checkboxf(self, event):
         """ Enable/Disabe the services """
-	out = commands.getoutput('ps -A')
+        out = commands.getoutput('ps -A')
         if self.service == " ":
             self.service = "sshd"
-	if self.service in out:
+        if self.service in out:
             sender = event.GetEventObject()
             ischecked = sender.GetValue()
             if ischecked:
-            	self.parser.set(self.service, 'enabled', 'true')
+                self.parser.set(self.service, 'enabled', 'true')
             else:
-            	self.parser.set(self.service, 'enabled', 'false')
+                self.parser.set(self.service, 'enabled', 'false')
 
             with open(JAIL_PATH, 'wb') as configfile:
-           	self.parser.write(configfile)
-	else:
-	    self.ShowError(self, "ERROR: The service is not enabled, please check that it is running.", exit = 1)
-	    self.box.SetValue(False)
+                self.parser.write(configfile)
+        else:
+            self.ShowError(self, "ERROR: The service is not enabled, please check that it is running.", exit = 1)
+            self.box.SetValue(False)
     def onselect(self, event):
         """ SpinCtrl checking """
 
@@ -175,8 +177,8 @@ class Logs_Class(wx.Panel):
     def ShowError(self, event, error_msg, exit ):
         dial = wx.MessageDialog(None, error_msg, 'Error', wx.OK | wx.ICON_ERROR)
         dial.ShowModal()
-	if exit != 1:
-        	sys.exit()
+        if exit != 1:
+            sys.exit()
 
     def openfile(self):
         """ Reading the log file """
@@ -219,16 +221,16 @@ class Logs_Class(wx.Panel):
                 self.tab1.SetStringItem(index, 4, source)
                 self.cur_view.append(i)
                 index -= 1
-		ti = str(datetime.now().time())
-		ti = ti.split(".")[0]
-		ti = ti[:-1]
-		timeix = time[:-1]
-		if ti in timeix:
-		    if source == 'Ban':
-			source = "banned"
-		    else:
-			source= "unbanned"
-		    tost.toster(self, 'Server {0} is {1}'.format(ban,source))
+                ti = str(datetime.now().time())
+                ti = ti.split(".")[0]
+                ti = ti[:-1]
+                timeix = time[:-1]
+                if ti in timeix:
+                    if source == 'Ban':
+                        source = "banned"
+                    else:
+                        source= "unbanned"
+                    winmesg.toster(self, 'Server {0} is {1}'.format(ban,source))
             count_rows = self.tab1.GetItemCount()
             for row in range(count_rows):
                 if row % 2:
@@ -237,7 +239,6 @@ class Logs_Class(wx.Panel):
                     self.tab1.SetItemBackgroundColour(row, "#E5E5E5")
                     self.tab1.SetBackgroundStyle(wx.LC_HRULES)
 
-
     def showyourself(self):
         """Shows the panel on the main frame."""
         self.Raise()
@@ -245,7 +246,6 @@ class Logs_Class(wx.Panel):
         self.Fit()
         self.GetParent().GetSizer().Show(self)
         self.GetParent().GetSizer().Layout()
-
 
 if __name__ == "__main__":
     print "This is a module for netspy2ban.py"
