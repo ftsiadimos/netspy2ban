@@ -3,20 +3,20 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2015 Fotios Tsiadimos
-# Licensed under the terms of the GPL License
-# (see License file for details)
 
 import wx
 import socket
 import sys
 import netstatus
+import subprocess
+import tost
 
 FILE_PATH = '/proc/net/nf_conntrack'
-    
+
 class Network_Class(wx.Panel):
     """Network connections"""
     def __init__(self, parent, idwx= -1):
-
+	subprocess.call(['/usr/bin/notify-send', 'App Title', 'Message'])
         wx.Panel.__init__(self, parent, idwx)
         mastersizer = wx.BoxSizer(wx.VERTICAL)
         mastersizer.AddSpacer(15)
@@ -24,16 +24,16 @@ class Network_Class(wx.Panel):
         txtheader = wx.StaticText(self, -1, 'Networking', (0, 0))
         font = wx.Font(16, wx.DEFAULT, wx.NORMAL, wx.BOLD)
         txtheader.SetFont(font)
-               
+
         rowtopsizer = wx.BoxSizer(wx.HORIZONTAL)
-        rowtopsizer.Add(txtheader, 3, wx.ALIGN_LEFT) 
-        rowtopsizer.Add((0, 0), 1)  
-        mastersizer.Add(rowtopsizer, 0, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=15) 
-        
+        rowtopsizer.Add(txtheader, 3, wx.ALIGN_LEFT)
+        rowtopsizer.Add((0, 0), 1)
+        mastersizer.Add(rowtopsizer, 0, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=15)
+	
         self.host1 = wx.StaticText(self, -1, "Program")
-        self.host2 = wx.StaticText(self, -1, "Pid")        
+        self.host2 = wx.StaticText(self, -1, "Pid")
         self.host11 = wx.StaticText(self, -1, "hostname")
-        
+
         self.tab1 = wx.ListCtrl(self, -1, style=wx.LC_REPORT | wx.LC_VRULES |wx.EXPAND)
         self.tab1.Bind(wx.EVT_LIST_ITEM_SELECTED, self.onItemSelected)
         self.tab1.InsertColumn(0, 'Source', width=135)
@@ -41,12 +41,11 @@ class Network_Class(wx.Panel):
         self.tab1.InsertColumn(2, 'Port', width=90)
         self.tab1.InsertColumn(3, 'Service', width=276)
 
-       
-        mastersizer.Add(self.tab1, 1, wx.EXPAND)         
+        mastersizer.Add(self.tab1, 1, wx.EXPAND)
         wx.EVT_TIMER(self, -1, self._ontimer)
         self.timer = wx.Timer(self, -1)
         self.timer.Start(1000)
-       
+
         rowbottomsizer = wx.BoxSizer(wx.HORIZONTAL)
         mastersizer.Add(rowbottomsizer, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=15)
         font1 = wx.Font(11, wx.DEFAULT, wx.NORMAL, wx.BOLD)
@@ -62,7 +61,6 @@ class Network_Class(wx.Panel):
         self.Hide()
         self.cur_view = []
         self.mess = []
-        
 
     def onItemSelected(self, event):
         """"""
@@ -71,7 +69,6 @@ class Network_Class(wx.Panel):
         s.connect(("8.8.8.8",80))
         ip = (s.getsockname()[0])
         s.close()
-
         list_split= []
         currentItem = event.m_itemIndex
         for i in  self.cur_view[currentItem]:
@@ -86,18 +83,17 @@ class Network_Class(wx.Panel):
                dd1 = details1[5]
                break
             else:
-               dd = "Unkonwn"
-        try:  
+               dd = "Unknown"
+        try:
 		ipaa = socket.gethostbyaddr(ipa)
 		ipaa = ipaa[0]
         except:
 		ipaa = 'Unknown'
-      
-        self.host11.SetLabel(ipaa)		 
-        self.host1.SetLabel(dd)	
-        self.host2.SetLabel(dd1)	 
-      
-      
+
+        self.host11.SetLabel(ipaa)
+        self.host1.SetLabel(dd)
+        self.host2.SetLabel(dd1)
+
     def _ofile(self):
         """Read file"""
         net_list = []
@@ -121,14 +117,19 @@ class Network_Class(wx.Panel):
         except IOError:
             error_msg =  "Didn't find nf_contrack in /proc/net folder."
             print error_msg
-            self.ShowError(self, error_msg)            
-            
+            self.ShowError(self, error_msg)
+
+
     def _ontimer(self, event):
         """ Refresh and show network card details."""
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8",80))
+        ip = (s.getsockname()[0])
+        s.close()
+
         cur_netstat = self._ofile()
         cur_netstat.sort()
-        self.tab1.Freeze() 
-        
+        self.tab1.Freeze()
         j = 0
         for details in  self.cur_view:
             if details not in cur_netstat:
@@ -146,6 +147,10 @@ class Network_Class(wx.Panel):
                     self.tab1.SetStringItem(i, 3, details[1])
                     self.cur_view.append(details)
                     self.myRowDict[i] = details
+		    if ip !=  details[3].lstrip('scr='):
+			ee = details[3].lstrip('scr=')
+			pp = details[5].lstrip('dport=')
+			tost.toster(self, "Server {0} is trying to connect via port {1}".format(ee, pp))
         count_rows = self.tab1.GetItemCount()
         for row in range(count_rows):
             if row % 2:
@@ -153,15 +158,15 @@ class Network_Class(wx.Panel):
             else:
                 self.tab1.SetItemBackgroundColour(row, "#E5E5E5")
                 self.tab1.SetBackgroundStyle(wx.LC_HRULES)
-                  
+
         self.tab1.Thaw()
-        
+
     def ShowError(self, event, error_msg):
-        dial = wx.MessageDialog(None, error_msg, 'Error', 
+        dial = wx.MessageDialog(None, error_msg, 'Error',
             wx.OK | wx.ICON_ERROR)
         dial.ShowModal()
         sys.exit()
-        
+
     def showyourself(self):
         """Shows the panel on the main frame."""
         self.Raise()
@@ -169,6 +174,6 @@ class Network_Class(wx.Panel):
         self.Fit()
         self.GetParent().GetSizer().Show(self)
         self.GetParent().GetSizer().Layout()
-        
+
 if __name__ == "__main__":
     print "This is a module for netspy2ban.py"

@@ -8,11 +8,12 @@
 
 import sys
 import os
-
+from wx.lib.wordwrap import wordwrap
 try:
     import wx
 except IOError:
     sys.exit("\nYou need to install the wx library.\n")
+import tost
 from taskbar import MyTaskBarIcon
 from mainpanel import Main_Class
 from networkpanel import Network_Class
@@ -25,29 +26,9 @@ class Mainpy(wx.Frame):
     """ Main Frame """
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title, style=wx.MINIMIZE_BOX | wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.CLIP_CHILDREN, size=(650, 550))
-
+	
         icon1 = wx.Icon("/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png", wx.BITMAP_TYPE_ICO)
         self.SetIcon(icon1)
-        # Creating the Menubar
-        ####################################################################
-        menuBar = wx.MenuBar()
-        filemenu = wx.Menu()
-        viewMenu = wx.Menu()
-        aboutmenu = wx.Menu()
-        self.shst = viewMenu.Append(wx.ID_ANY, 'Hide frame on close',
-                                    'Hide frame on close', kind=wx.ITEM_CHECK)
-        viewMenu.Check(self.shst.GetId(), True)
-        self.Bind(wx.EVT_MENU, self.OnClose, self.shst)
-        menuAbout = aboutmenu.Append(wx.ID_ABOUT, "&About", " Information about this program")
-        menuExit = filemenu.Append(wx.ID_EXIT, "E&xit", " Terminate the program")
-        menuBar.Append(filemenu, "&File") #Adding the "filemenu" to the MenuBar
-        menuBar.Append(viewMenu, '&View')
-        menuBar.Append(aboutmenu, '&Help')
-        self.SetMenuBar(menuBar)  # Adding the MenuBar to the Frame content.
-        self.Bind(wx.EVT_MENU, self.OnAbout, menuAbout)
-        self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
-        ####################################################################
-        # Ending the Menubar
         
         # Creating the Toolbar
         ####################################################################
@@ -80,8 +61,59 @@ class Mainpy(wx.Frame):
 
         self.SetSizer(vbox)
         self.Centre()
-        self.panel0.showyourself()
-               
+        self.panel0.showyourself() 
+	self.createMenu()
+
+
+    def createMenu(self):
+        """ Create the application's menu """
+        menuBar = wx.MenuBar()
+	viewMenu = wx.Menu()
+        fileMenu = wx.Menu()
+	
+	#filemenu
+        menuExit = fileMenu.Append(wx.ID_EXIT, "E&xit", " Terminate the program")
+        menuBar.Append(fileMenu, "&File") #Adding the "filemenu" to the MenuBar
+	#viewmenu
+
+       	self.shst = viewMenu.Append(wx.ID_ANY, 'Hide frame on close',
+                                    'Hide frame on close', kind=wx.ITEM_CHECK)
+        self.note = viewMenu.Append(wx.ID_ANY, 'Enable notifications',
+                                    'Enable notifications', kind=wx.ITEM_CHECK)
+
+        viewMenu.Check(self.shst.GetId(), True)
+	viewMenu.Check(self.note.GetId(), True)
+        self.Bind(wx.EVT_MENU, self.OnClose, self.shst)
+	self.Bind(wx.EVT_MENU, self.OnNote, self.note)
+	#helpmenu
+        helpMenu = wx.Menu()
+        about_menu_item = helpMenu.Append(wx.NewId(),
+                                          "About",
+                                          "Opens the About Box")
+        self.Bind(wx.EVT_MENU, self.onAboutDlg, about_menu_item)
+        menuBar.Append(viewMenu, '&View')
+        menuBar.Append(helpMenu, "Help")
+        self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
+        self.SetMenuBar(menuBar)
+    def onAboutDlg(self, event):
+        info = wx.AboutDialogInfo()
+	info.SetIcon(wx.Icon('/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png', wx.BITMAP_TYPE_PNG)) 
+        info.Name = "My About Box"
+        info.Version = "0.0.1 Beta"
+        info.Copyright = "(C) 2008 Python Geeks Everywhere"
+        info.Description = wordwrap(
+            "This is an example application that shows how to create "
+            "different kinds of About Boxes using wxPython!",
+            350, wx.ClientDC(self.panel0))
+        info.WebSite = ("http://www.pythonlibrary.org", "My Home Page")
+        info.Developers = ["Mike Driscoll"]
+        info.License = wordwrap("Completely and totally open source!", 500,
+                                wx.ClientDC(self.panel0))
+        wx.AboutBox(info)
+
+    def onClose(self, event):
+        self.Close()
+             
     def OnHome(self, event):
         self.panel1.Hide()
         self.panel2.Hide()
@@ -102,31 +134,15 @@ class Mainpy(wx.Frame):
             self.Bind(wx.EVT_CLOSE, self.OnExit)
         else:
             self.Hide()
-        
+    def OnNote(self, event):
+	if not self.note.IsChecked():
+		tost.a=0
+	else:
+		tost.a=1      
     def OnExit(self, event):
         self.Destroy()
         self.tskic.Destroy()
-        
-   # def OnAbout(self, event):
-    #    """ A message dialog box with an OK button. wx.OK is a standard ID in wxWidgets. """
-     #   dlg = wx.MessageDialog(self, "NetSpy2Ban is a graphical tool to monitor\n your system\n Version: 1.00", "About NetSpy2Ban", wx.OK)
-     #   dlg.ShowModal() # Show it
-     #   dlg.Destroy() # finally destroy it when finished.
-    def onAbout(self, event):
-    	info = wx.AboutDialogInfo()
-    	info.Name = "My About Box"
-    	info.Version = "0.0.1 Beta"
-    	info.Copyright = "(C) 2008 Python Geeks Everywhere"
-    	info.Description = wordwrap(
-        "This is an example application that shows how to create "
-        "different kinds of About Boxes using wxPython!",
-        350, wx.ClientDC(self.panel))
-    	info.WebSite = ("http://www.pythonlibrary.org", "My Home Page")
-    	info.Developers = ["Mike Driscoll"]
-    	info.License = wordwrap("Completely and totally open source!", 500,
-                            wx.ClientDC(self.panel))
-    	# Show the wx.AboutBox
-    	wx.AboutBox(info)
+
 class MyApp(wx.App):
     def OnInit(self):
         frame = Mainpy(None, -1, 'NetSpy2ban')

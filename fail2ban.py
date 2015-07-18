@@ -1,10 +1,8 @@
 #!/usr/bin/env python
-""" Fail2Ban GUI Controller """
+""" Fail2ban Gui controler"""
 # -*- coding: utf-8 -*-
 #
 # Copyright 2015 Fotios Tsiadimos
-# Licensed under the terms of the GPL License
-# (see License file for details)
 
 import wx
 import sys
@@ -13,6 +11,9 @@ import os
 import shutil
 import subprocess
 import fileinput
+import commands
+import tost
+from datetime import datetime
 
 FILE_PATH = '/var/log/fail2ban.log'
 JAIL_PATH = '/etc/fail2ban/jail.local'
@@ -27,12 +28,17 @@ class Logs_Class(wx.Panel):
                     line = line.replace("backend = auto", "backend = systemd")
                 sys.stdout.write(line)
             command = ['/usr/sbin/service', 'fail2ban', 'restart']
-            subprocess.call(command, shell=False)            
+            subprocess.call(command, shell=False)
 
         wx.Panel.__init__(self, parent, idwx)
-
+	out = commands.getoutput('ps -A')
+	
         self.parser = ConfigParser.ConfigParser()
         self.parser.read(JAIL_PATH)
+	distros = self.parser.sections()
+	for i in distros:
+           if i not in out:
+		self.parser.set(i, 'enabled', 'false')
         sshcheck = self.parser.getboolean('sshd', 'enabled')
         sshmaxtry = self.parser.getint('sshd', 'maxretry')
         banti = self.parser.getint('DEFAULT', 'bantime')
@@ -52,20 +58,20 @@ class Logs_Class(wx.Panel):
         self.box2.SetValue(findti)
         lab3 = wx.StaticText(self, 1, "Ban-after:")
         self.box3 = wx.SpinCtrl(self, value='1', size=(1, -1), min=1, max=12)
-        self.box3.SetValue(sshmaxtry)
-        butapply= wx.Button(self, label='Apply', pos=(550, 15))
+        self.box3.SetValue(sshmaxtry-1)
+        butapply = wx.Button(self, label='Apply', pos=(550, 15))
         butapply.Bind(wx.EVT_BUTTON, self.applybutton)
 
-        distros = self.parser.sections()
-	if 'INCLUDES' in distros: 
-        	distros.remove('INCLUDES')
+        if 'INCLUDES' in distros:
+            distros.remove('INCLUDES')
+		
         combox = wx.ComboBox(self, choices=distros, style=wx.CB_READONLY)
-        combox.SetSelection(0)        
+        combox.SetSelection(0)
         combox.Bind(wx.EVT_COMBOBOX, self.onselect)
 
         txtheader = wx.StaticText(self, -1, 'Fail2Ban', (0, 0))
         font = wx.Font(16, wx.DEFAULT, wx.NORMAL, wx.BOLD)
-        font1 = wx.Font(11, wx.DEFAULT, wx.NORMAL, wx.BOLD)
+        font1 = wx.Font(10, wx.NORMAL,  wx.NORMAL, wx.NORMAL)
         txtheader.SetFont(font)
         self.box.SetFont(font1)
         lab1.SetFont(font1)
@@ -77,10 +83,8 @@ class Logs_Class(wx.Panel):
 
         mastersizer.Add(rowtopsizer, 0, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=15)
 
-        self.sizerv = wx.StaticBoxSizer(wx.StaticBox(self, wx.NewId(), 'General Settings'),
-                                        wx.HORIZONTAL)
-        self.sizerva = wx.StaticBoxSizer(wx.StaticBox(self, wx.NewId(), 'Services Settings'), 
-                                          wx.HORIZONTAL)
+        self.sizerv = wx.StaticBoxSizer(wx.StaticBox(self, wx.NewId(), 'General Settings'), wx.HORIZONTAL)
+        self.sizerva = wx.StaticBoxSizer(wx.StaticBox(self, wx.NewId(), 'Services Settings'), wx.HORIZONTAL)
         self.sizerv.Add(lab1, 0, wx.CENTER)
         self.sizerv.Add(self.box1, 1)
         self.sizerv.Add(lab2, 0, wx.CENTER)
@@ -117,7 +121,7 @@ class Logs_Class(wx.Panel):
         self.service = " "
 
     def applybutton(self, event):
-        """ Save the changes inthe configure file"""
+        """ Save the changes inthe configure file """
 
         banv = self.box1.GetValue()
         findv = self.box2.GetValue()
@@ -125,74 +129,77 @@ class Logs_Class(wx.Panel):
         self.parser.set('DEFAULT', 'bantime', banv)
         self.parser.set('DEFAULT', 'findtime', findv)
         if self.service == " ":
-            self.parser.set("sshd", 'maxretry', maxv)
+            self.parser.set("sshd", 'maxretry', maxv+1)
         else:
-            self.parser.set(self.service, 'maxretry', maxv)
+            self.parser.set(self.service, 'maxretry', maxv+1)
         with open(JAIL_PATH, 'wb') as configfile:
             self.parser.write(configfile)
 
         command = ['/usr/bin/fail2ban-client', 'reload']
         subprocess.call(command, shell=False)
 
-
     def checkboxf(self, event):
-        """ Enable/Disabe the services"""
-
-        sender = event.GetEventObject()
-        ischecked = sender.GetValue()
+        """ Enable/Disabe the services """
+	out = commands.getoutput('ps -A')
         if self.service == " ":
             self.service = "sshd"
-        if ischecked:
-            self.parser.set(self.service, 'enabled', 'true')
-        else:
-            self.parser.set(self.service, 'enabled', 'false')
+	if self.service in out:
+            sender = event.GetEventObject()
+            ischecked = sender.GetValue()
+            if ischecked:
+            	self.parser.set(self.service, 'enabled', 'true')
+            else:
+            	self.parser.set(self.service, 'enabled', 'false')
 
-        with open(JAIL_PATH, 'wb') as configfile:
-           self. parser.write(configfile)
-
+            with open(JAIL_PATH, 'wb') as configfile:
+           	self.parser.write(configfile)
+	else:
+	    self.ShowError(self, "ERROR: The service is not enabled, please check that it is running.", exit = 1)
+	    self.box.SetValue(False)
     def onselect(self, event):
-        """ SpinCtrl checking"""
+        """ SpinCtrl checking """
 
         self.service = event.GetString()
         sshcheck = self.parser.getboolean(self.service, 'enabled')
         self.box.SetValue(sshcheck)
-        font3 = wx.Font(11, wx.DEFAULT, wx.NORMAL, wx.BOLD)
+        font3 = wx.Font(10, wx.NORMAL,  wx.NORMAL, wx.NORMAL)
         try:
-            self.box3.SetRange(0, 12)
+            self.box3.SetRange(1, 12)
             sshmaxtry = self.parser.getint(self.service, 'maxretry')
-            self.box3.SetValue(sshmaxtry)
+            self.box3.SetValue(sshmaxtry-1)
         except:
-            self.box3.SetRange(0, 0)    
+            self.box3.SetRange(1, 0)
         self.box.SetLabel(self.service)
         self.box.SetFont(font3)
-    
-    def ShowError(self, event, error_msg):
-        dial = wx.MessageDialog(None, error_msg, 'Error', 
-            wx.OK | wx.ICON_ERROR)
+
+    def ShowError(self, event, error_msg, exit ):
+        dial = wx.MessageDialog(None, error_msg, 'Error', wx.OK | wx.ICON_ERROR)
         dial.ShowModal()
-        sys.exit()
-        
+	if exit != 1:
+        	sys.exit()
+
     def openfile(self):
-        """ Reading the log file"""
+        """ Reading the log file """
         try:
-	    ban = ['Ban', 'Unban']
+            ban = ['Ban', 'Unban']
             filelist = []
             items = open(FILE_PATH)
             for item in items:
                 if  "NOTICE"  in item:
                     splitv = item.split()
                     for i in splitv:
-                    	if i in ban:
+                        if i in ban:
                             filelist.append(splitv)
             items.close()
             return filelist
         except IOError:
-            error_msg ="You need to activate the fail2ban.log file in your /var/log folder."
+            error_msg = "You need to activate the fail2ban.log file in your /var/log folder."
             print error_msg
-            self.ShowError(self, error_msg)
-            
+            self.ShowError(self, error_msg, 0)
+
     def _ontimer(self, event):
         """Refresh log messages."""
+
         listfile = self.openfile()
         for i in listfile:
             date = str(i[0])
@@ -212,6 +219,16 @@ class Logs_Class(wx.Panel):
                 self.tab1.SetStringItem(index, 4, source)
                 self.cur_view.append(i)
                 index -= 1
+		ti = str(datetime.now().time())
+		ti = ti.split(".")[0]
+		ti = ti[:-1]
+		timeix = time[:-1]
+		if ti in timeix:
+		    if source == 'Ban':
+			source = "banned"
+		    else:
+			source= "unbanned"
+		    tost.toster(self, 'Server {0} is {1}'.format(ban,source))
             count_rows = self.tab1.GetItemCount()
             for row in range(count_rows):
                 if row % 2:
