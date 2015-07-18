@@ -60,7 +60,6 @@ class Network_Class(wx.Panel):
         newbox.Add(self.host2, 1, wx.LEFT)
         mastersizer.Add(newbox, 0, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=15)
 
-        AA = netstatus.netstat()
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
         self.myhost = (s.getsockname()[0])
@@ -73,6 +72,7 @@ class Network_Class(wx.Panel):
 
     def onItemSelected(self, event):
         """mouse click on rows"""
+        AA = netstatus.netstat()
         list_split = []
         currentItem = event.m_itemIndex
         for i in  self.cur_view[currentItem]:
