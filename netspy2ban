@@ -27,7 +27,7 @@ class Mainpy(wx.Frame):
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title, style=wx.MINIMIZE_BOX | wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.CLIP_CHILDREN, size=(650, 550))
 	
-        icon1 = wx.Icon("/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png", wx.BITMAP_TYPE_ICO)
+        icon1 = wx.Icon("/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.ico", wx.BITMAP_TYPE_ICO)
         self.SetIcon(icon1)
         
 	#panel = wx.Panel(self)
