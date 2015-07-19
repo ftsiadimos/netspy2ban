@@ -20,7 +20,7 @@ from datetime import datetime
 FILE_PATH = '/var/log/fail2ban.log'
 JAIL_PATH = '/etc/fail2ban/jail.local'
 
-class Logs_Class(wx.Panel):
+class Fail2banclass(wx.Panel):
     """GUI control and logs for fail2ban"""
     def __init__(self, parent, idwx=-1):
         if not os.path.isfile(JAIL_PATH):
@@ -73,7 +73,7 @@ class Logs_Class(wx.Panel):
 
         txtheader = wx.StaticText(self, -1, 'Fail2Ban', (0, 0))
         font = wx.Font(16, wx.DEFAULT, wx.NORMAL, wx.BOLD)
-        font1 = wx.Font(10, wx.NORMAL,  wx.NORMAL, wx.NORMAL)
+        font1 = wx.Font(10, wx.NORMAL, wx.NORMAL, wx.NORMAL)
         txtheader.SetFont(font)
         self.box.SetFont(font1)
         lab1.SetFont(font1)
@@ -85,8 +85,10 @@ class Logs_Class(wx.Panel):
 
         mastersizer.Add(rowtopsizer, 0, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=15)
 
-        self.sizerv = wx.StaticBoxSizer(wx.StaticBox(self, wx.NewId(), 'General Settings'), wx.HORIZONTAL)
-        self.sizerva = wx.StaticBoxSizer(wx.StaticBox(self, wx.NewId(), 'Services Settings'), wx.HORIZONTAL)
+        self.sizerv = wx.StaticBoxSizer(wx.StaticBox(self, wx.NewId(), \
+             'General Settings'), wx.HORIZONTAL)
+        self.sizerva = wx.StaticBoxSizer(wx.StaticBox(self, wx.NewId(), \
+             'Services Settings'), wx.HORIZONTAL)
         self.sizerv.Add(lab1, 0, wx.CENTER)
         self.sizerv.Add(self.box1, 1)
         self.sizerv.Add(lab2, 0, wx.CENTER)
@@ -156,15 +158,17 @@ class Logs_Class(wx.Panel):
             with open(JAIL_PATH, 'wb') as configfile:
                 self.parser.write(configfile)
         else:
-            self.ShowError(self, "ERROR: The service is not enabled, please check that it is running.", exit = 1)
+            self.showrror(self, \
+            "ERROR: The service is not enabled, please check that it is running.", exit=1)
             self.box.SetValue(False)
+
     def onselect(self, event):
         """ SpinCtrl checking """
 
         self.service = event.GetString()
         sshcheck = self.parser.getboolean(self.service, 'enabled')
         self.box.SetValue(sshcheck)
-        font3 = wx.Font(10, wx.NORMAL,  wx.NORMAL, wx.NORMAL)
+        font3 = wx.Font(10, wx.NORMAL, wx.NORMAL, wx.NORMAL)
         try:
             self.box3.SetRange(1, 12)
             sshmaxtry = self.parser.getint(self.service, 'maxretry')
@@ -174,7 +178,8 @@ class Logs_Class(wx.Panel):
         self.box.SetLabel(self.service)
         self.box.SetFont(font3)
 
-    def ShowError(self, event, error_msg, exit ):
+    def showrror(self, event, error_msg, exit):
+        """ Mesg Error Box """
         dial = wx.MessageDialog(None, error_msg, 'Error', wx.OK | wx.ICON_ERROR)
         dial.ShowModal()
         if exit != 1:
@@ -197,7 +202,7 @@ class Logs_Class(wx.Panel):
         except IOError:
             error_msg = "You need to activate the fail2ban.log file in your /var/log folder."
             print error_msg
-            self.ShowError(self, error_msg, 0)
+            self.showrror(self, error_msg, 0)
 
     def _ontimer(self, event):
         """Refresh log messages."""
@@ -221,16 +226,16 @@ class Logs_Class(wx.Panel):
                 self.tab1.SetStringItem(index, 4, source)
                 self.cur_view.append(i)
                 index -= 1
-                ti = str(datetime.now().time())
-                ti = ti.split(".")[0]
-                ti = ti[:-1]
+                cur_time = str(datetime.now().time())
+                cur_time = cur_time.split(".")[0]
+                cur_time = cur_time[:-1]
                 timeix = time[:-1]
-                if ti in timeix:
+                if cur_time in timeix:
                     if source == 'Ban':
                         source = "banned"
                     else:
-                        source= "unbanned"
-                    winmesg.toster(self, 'Server {0} is {1}'.format(ban,source))
+                        source = "unbanned"
+                    winmesg.toster(self, 'Server {0} is {1}'.format(ban, source))
             count_rows = self.tab1.GetItemCount()
             for row in range(count_rows):
                 if row % 2:

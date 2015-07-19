@@ -14,10 +14,10 @@ try:
 except IOError:
     sys.exit("\nYou need to install the wx library.\n")
 import winmesg
-from taskbar import MyTaskBarIcon
-from mainpanel import Main_Class
+from taskbar import Mytaskbaricon
+from mainpanel import Mainclass
 from networkpanel import Networkclass
-from fail2ban import Logs_Class
+from fail2ban import Fail2banclass
 
 if not os.geteuid() == 0:
     sys.exit("\nOnly root can run this program. --> sudo python netspy2ban.py <--\n")
@@ -25,135 +25,155 @@ if not os.geteuid() == 0:
 class Mainpy(wx.Frame):
     """ Main Frame """
     def __init__(self, parent, id, title):
-        wx.Frame.__init__(self, parent, id, title, style=wx.MINIMIZE_BOX | wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.CLIP_CHILDREN, size=(650, 550))
-	
-        icon1 = wx.Icon("/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.ico", wx.BITMAP_TYPE_ICO)
+        """ Init of the frame"""
+        wx.Frame.__init__(self, parent, id, title, \
+            style=wx.MINIMIZE_BOX | wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.CLIP_CHILDREN, \
+            size=(650, 550))
+        icon1 = wx.Icon("/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.ico", \
+            wx.BITMAP_TYPE_ICO)
         self.SetIcon(icon1)
-        
-	#panel = wx.Panel(self)
-	#panel = MyPanel(self)
+
         # Creating the Toolbar
         ####################################################################
         vbox = wx.BoxSizer(wx.VERTICAL)
         toolbar = wx.ToolBar(self, -1, style=wx.TB_HORIZONTAL|wx.TB_FLAT|wx.TB_TEXT)
-        toolbar.AddLabelTool(1, "Status", wx.Bitmap("/usr/lib/python2.7/site-packages/netspy2ban/icons/Home.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Home", "")
-        toolbar.AddSeparator()        
-        toolbar.AddLabelTool(2, "Networking", wx.Bitmap("/usr/lib/python2.7/site-packages/netspy2ban/icons/net.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Netwotking", "")
-        toolbar.AddLabelTool(3, "Fail2ban", wx.Bitmap("/usr/lib/python2.7/site-packages/netspy2ban/icons/lock.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Fail2ban", "")  
-        toolbar.AddSeparator() 
-        toolbar.AddLabelTool(7, "Exit", wx.Bitmap("/usr/lib/python2.7/site-packages/netspy2ban/icons/stop.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Exit", "")
+        toolbar.AddLabelTool(1, "Status", wx.Bitmap \
+             ("/usr/lib/python2.7/site-packages/netspy2ban/icons/Home.png", \
+             wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Home", "")
+        toolbar.AddSeparator()
+        toolbar.AddLabelTool(2, "Networking", wx.Bitmap \
+             ("/usr/lib/python2.7/site-packages/netspy2ban/icons/net.png", \
+             wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Netwotking", "")
+        toolbar.AddLabelTool(3, "Fail2ban", wx.Bitmap \
+             ("/usr/lib/python2.7/site-packages/netspy2ban/icons/lock.png", \
+             wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Fail2ban", "")
+        toolbar.AddSeparator()
+        toolbar.AddLabelTool(7, "Exit", wx.Bitmap \
+            ("/usr/lib/python2.7/site-packages/netspy2ban/icons/stop.png", \
+            wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Exit", "")
         toolbar.Realize()
         vbox.Add(toolbar, 0, wx.EXPAND)
         self.Bind(wx.EVT_TOOL, self.OnHome, id=1)
         self.Bind(wx.EVT_TOOL, self.OnNet, id=2)
-        self.Bind(wx.EVT_TOOL, self.OnLogs, id=3)
+        self.Bind(wx.EVT_TOOL, self.Onfail2ban, id=3)
         self.Bind(wx.EVT_TOOL, self.OnExit, id=7)
-        ####################################################################        
+        ####################################################################
         #Ending Toolbar
-        self.tskic = MyTaskBarIcon(self)  #Calling the taskbar
+        self.tskic = Mytaskbaricon(self)  #Calling the taskbar
         self.Bind(wx.EVT_CLOSE, self.OnClose) #Closing button on window
-        self.panel0 = Main_Class(self)
+        self.panel0 = Mainclass(self)
         vbox.Add(self.panel0, -1, wx.EXPAND)
 
-        self.panel1 = Networkclass(self)       
+        self.panel1 = Networkclass(self)
         vbox.Add(self.panel1, -1, wx.EXPAND)
-        
-        self.panel2 = Logs_Class(self)       
-        vbox.Add(self.panel2, -1, wx.EXPAND)        
+
+        self.panel2 = Fail2banclass(self)
+        vbox.Add(self.panel2, -1, wx.EXPAND)
 
         self.SetSizer(vbox)
         self.Centre()
-        self.panel0.showyourself() 
-	self.createMenu()
+        self.panel0.showyourself()
+        self.createMenu()
 
 
     def createMenu(self):
         """ Create the application's menu """
         menuBar = wx.MenuBar()
-	viewMenu = wx.Menu()
+        viewMenu = wx.Menu()
         fileMenu = wx.Menu()
-	
-	#filemenu
+
+        #filemenu
         menuExit = fileMenu.Append(wx.ID_EXIT, "E&xit", " Terminate the program")
         menuBar.Append(fileMenu, "&File") #Adding the "filemenu" to the MenuBar
-	#viewmenu
+        #viewmenu
 
-       	self.shst = viewMenu.Append(wx.ID_ANY, 'Hide frame on close',
+        self.shst = viewMenu.Append(wx.ID_ANY, 'Hide frame on close', \
                                     'Hide frame on close', kind=wx.ITEM_CHECK)
-        self.note = viewMenu.Append(wx.ID_ANY, 'Enable notifications',
+        self.note = viewMenu.Append(wx.ID_ANY, 'Enable notifications', \
                                     'Enable notifications', kind=wx.ITEM_CHECK)
 
         viewMenu.Check(self.shst.GetId(), True)
-	viewMenu.Check(self.note.GetId(), True)
+        viewMenu.Check(self.note.GetId(), True)
         self.Bind(wx.EVT_MENU, self.OnClose, self.shst)
-	self.Bind(wx.EVT_MENU, self.OnNote, self.note)
-	#helpmenu
+        self.Bind(wx.EVT_MENU, self.OnNote, self.note)
+        #helpmenu
         helpMenu = wx.Menu()
-        about_menu_item = helpMenu.Append(wx.NewId(),
-                                          "About",
+        about_menu_item = helpMenu.Append(wx.NewId(), \
+                                          "About", \
                                           "Opens the About Box")
         self.Bind(wx.EVT_MENU, self.onAboutDlg, about_menu_item)
         menuBar.Append(viewMenu, '&View')
         menuBar.Append(helpMenu, "Help")
         self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
         self.SetMenuBar(menuBar)
+
     def onAboutDlg(self, event):
+        """ Help menu box """
         info = wx.AboutDialogInfo()
-	info.SetIcon(wx.Icon('/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png', wx.BITMAP_TYPE_PNG)) 
+        info.SetIcon(wx.Icon('/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png', \
+             wx.BITMAP_TYPE_PNG))
         info.Name = "NetSpy2Ban"
         info.Version = "1.0.1"
         info.Copyright = "(C) 2015 Fotios Tsiadimos"
         info.Description = wordwrap(
             "GUI For Fail2Ban and Networking Tool  "
-            " NetSpy2Ban includes a graphic user interface to provide user-friendly functionality for the Fail2Ban service.",
+            " NetSpy2Ban includes a graphic user interface to provide user-friendly \
+             functionality for the Fail2Ban service.",
             350, wx.ClientDC(self.panel0))
         info.WebSite = ("https://github.com/ftsiadimos/netspy2ban", "NetSpy2Ban Home Page")
         info.Developers = ["Fotios Tsiadimos"]
-        info.License = wordwrap("Licensed under the terms of the GPL License", 500,
+        info.License = wordwrap("Licensed under the terms of the GPL License", 500, \
                                 wx.ClientDC(self.panel0))
         wx.AboutBox(info)
 
     def onClose(self, event):
+        """ close button """
         self.Close()
-             
+
     def OnHome(self, event):
+        """ Call main panel """
         self.panel1.Hide()
         self.panel2.Hide()
-        self.panel0.showyourself()    
+        self.panel0.showyourself()
 
     def OnNet(self, event):
+        """ Call networking panel """
         self.panel0.Hide()
         self.panel2.Hide()
         self.panel1.showyourself()
 
-    def OnLogs(self, event):
+    def Onfail2ban(self, event):
+        """ Call fail2ban panel """
         self.panel1.Hide()
         self.panel0.Hide()
         self.panel2.showyourself()
+
     def onhide(self, event):
-	self.Hide() 
+        """ taskbar checkbox """
+        self.Hide()
+
     def OnClose(self, event):
+        """ taskbar checkbox """
         if not self.shst.IsChecked():
             self.Bind(wx.EVT_CLOSE, self.OnExit)
         else:
             self.Bind(wx.EVT_CLOSE, self.onhide)
+
     def OnNote(self, event):
-	if not self.note.IsChecked():
-		winmesg.popdefault=0
-	else:
-		winmesg.popdefault=1      
+        """ Show notice on desktop """
+        if not self.note.IsChecked():
+            winmesg.POPMSG = 0
+        else:
+            winmesg.POPMSG = 1
+
     def OnExit(self, event):
         self.Destroy()
         self.tskic.Destroy()
 
-class MyPanel(wx.Panel):
-
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-	panel.Show()
-
 class MyApp(wx.App):
+    """ Main Class """
     def OnInit(self):
+        """ Init call of frame """
         frame = Mainpy(None, -1, 'NetSpy2ban')
         frame.Show(True)
         frame.Center()

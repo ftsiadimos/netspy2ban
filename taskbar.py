@@ -8,19 +8,20 @@
 
 import wx
 
-class MyTaskBarIcon(wx.TaskBarIcon):
+class Mytaskbaricon(wx.TaskBarIcon):
     """ Main Taskbar Class """
     def __init__(self, frame):
         wx.TaskBarIcon.__init__(self)
 
         self.frame = frame
-        self.SetIcon(wx.Icon("/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.ico", wx.BITMAP_TYPE_ICO), 'NetSpy2Ban')
-        self.Bind(wx.EVT_MENU, self.OnTaskBarActivate, id=1)
-        self.Bind(wx.EVT_MENU, self.OnTaskBarDeactivate, id=2)
-        self.Bind(wx.EVT_MENU, self.OnTaskBarClose, id=3)
-        self.Bind(wx.EVT_TASKBAR_LEFT_DOWN, self.on_left_down)
+        self.SetIcon(wx.Icon("/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.ico", \
+            wx.BITMAP_TYPE_ICO), 'NetSpy2Ban')
+        self.Bind(wx.EVT_MENU, self.ontaskbaractivate, id=1)
+        self.Bind(wx.EVT_MENU, self.ontaskbardeactivate, id=2)
+        self.Bind(wx.EVT_MENU, self.ontaskbarclose, id=3)
+        self.Bind(wx.EVT_TASKBAR_LEFT_DOWN, self.onleftdown)
 
-    def on_left_down(self, event):
+    def onleftdown(self, event):
         """ Hide the window on left click """
         if self.frame.IsShown():
             self.frame.Hide()
@@ -35,16 +36,16 @@ class MyTaskBarIcon(wx.TaskBarIcon):
         menu.Append(3, 'Close')
         return menu
 
-    def OnTaskBarClose(self, event):
+    def ontaskbarclose(self, event):
         """ Close main window """
         self.frame.Destroy()
         self.Destroy()
-    def OnTaskBarActivate(self, event):
+    def ontaskbaractivate(self, event):
         """ Shoow window """
         if not self.frame.IsShown():
             self.frame.Show()
 
-    def OnTaskBarDeactivate(self, event):
+    def ontaskbardeactivate(self, event):
         """ Hide the window """
         if self.frame.IsShown():
             self.frame.Hide()

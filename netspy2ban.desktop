@@ -4,6 +4,6 @@ Terminal=false
 Name=NetSpy2Ban
 Exec=/usr/bin/netspy2start
 Type=Application
-Icon=/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png
+Icon=netspy2ban
 Categories=GNOME;GTK;System;Profiling;
 Keywords=fail2ban;networking;

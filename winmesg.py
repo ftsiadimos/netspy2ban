@@ -9,20 +9,21 @@
 
 import wx
 import wx.lib.agw.toasterbox as TB
-popdefault = 1
+POPMSG = 1
 
 def toster(self, event):
-        toaster = TB.ToasterBox(self, tbstyle=TB.TB_SIMPLE)
-        toaster.SetTitle('NetSpy2Ban')
-        toaster.SetPopupPauseTime(4000)
-        toaster.SetPopupBackgroundColour("BLACK")
-        toaster.SetPopupPositionByInt(0)
-        toaster.SetPopupScrollSpeed(10)
-        toaster.SetPopupSize((400,100))
-        toaster.SetPopupTextColour("RED")
-        toaster.SetPopupText(event)
-	if popdefault == 1:
-        	wx.CallLater(1000, toaster.Play)
+    """ Main Mesg Function """
+    toaster = TB.ToasterBox(self, tbstyle=TB.TB_SIMPLE)
+    toaster.SetTitle('NetSpy2Ban')
+    toaster.SetPopupPauseTime(4000)
+    toaster.SetPopupBackgroundColour("BLACK")
+    toaster.SetPopupPositionByInt(0)
+    toaster.SetPopupScrollSpeed(10)
+    toaster.SetPopupSize((400, 100))
+    toaster.SetPopupTextColour("RED")
+    toaster.SetPopupText(event)
+    if POPMSG == 1:
+        wx.CallLater(1000, toaster.Play)
 
 
 if __name__ == "__main__":
