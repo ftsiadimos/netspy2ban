@@ -1,7 +1,9 @@
 [Desktop Entry]
-Comment=NetSpy2Ban
+Comment=A user interface for GNU/Linux desktop
 Terminal=false
 Name=NetSpy2Ban
 Exec=/usr/bin/netspy2start
 Type=Application
 Icon=/usr/lib/python2.7/site-packages/netspy2ban/icons/netspy2ban.png
+Categories=GNOME;GTK;System;Profiling;
+Keywords=fail2ban;networking;
