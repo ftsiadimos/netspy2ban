@@ -16,7 +16,7 @@ except IOError:
 import winmesg
 from taskbar import MyTaskBarIcon
 from mainpanel import Main_Class
-from networkpanel import Network_Class
+from networkpanel import Networkclass
 from fail2ban import Logs_Class
 
 if not os.geteuid() == 0:
@@ -55,7 +55,7 @@ class Mainpy(wx.Frame):
         self.panel0 = Main_Class(self)
         vbox.Add(self.panel0, -1, wx.EXPAND)
 
-        self.panel1 = Network_Class(self)       
+        self.panel1 = Networkclass(self)       
         vbox.Add(self.panel1, -1, wx.EXPAND)
         
         self.panel2 = Logs_Class(self)       
