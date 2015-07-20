@@ -8,5 +8,5 @@ NetSpy2Ban is a graphic user interface program for Fedora 22 OS. The program ser
 <img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima1.png" width="400" height="290" alt="image1"/><br>
 <img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima2.png" width="400" height="290" alt="image2"/><br>
 <img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/task1ima.png" width="300" height="140" alt="notify-image1"/><br>
-<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima3.png" width="400" height="290" alt="imag3"/></p><br>
-<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/task2ima.png" width="300" height="140" alt="notify-image2"/><br>
+<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima3.png" width="400" height="290" alt="imag3"/><br>
+<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/task2ima.png" width="300" height="140" alt="notify-image2"/></p>
