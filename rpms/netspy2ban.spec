@@ -6,7 +6,7 @@ Summary: GUI Networking Tool
 Group: Applications/System
 License:GPL 
 URL: https://github.com/ftsiadimos/netspy2ban
-Source0: netspy2ban-1.0.tar.gz
+Source0: http://github.com/ftsiadimos/netspy2ban/blob/master/rpms/netspy2ban-1.0.tar.gz
 BuildArch: noarch
 
 Requires: wxPython, fail2ban, python
