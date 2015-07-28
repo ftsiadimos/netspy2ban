@@ -1,18 +1,24 @@
 Name: netspy2ban
 Version:1.0
 Release: 1%{?dist}
-Summary: GUI Networking Tool
+Summary: GUI Live Networking Tool and Fail2ban Interface
 
 Group: Applications/System
-License:GPL 
+License: GPLv2+ 
 URL: https://github.com/ftsiadimos/netspy2ban
-Source0: http://github.com/ftsiadimos/netspy2ban/blob/master/rpms/netspy2ban-1.0.tar.gz
+Source0: https://github.com/ftsiadimos/netspy2ban/blob/master/rpms/netspy2ban-1.0.tar.gz
+Source1: %{name}.desktop
 BuildArch: noarch
 
 Requires: wxPython, fail2ban, python
 
 %description
-GUI Networking Tool and Fail2ban Controller
+NetSpy2Ban is a graphic user interface program for Fedora 22 OS.
+The program serves three functions. The first function is to view
+connected network cards and their speed. The second is to allow 
+real time monitoring of your network connections. Lastly, NetSpy2Ban
+includes a graphic user interface to provide user-friendly functionality 
+for the Fail2Ban service.
 
 %prep
 %setup -q
@@ -22,30 +28,31 @@ GUI Networking Tool and Fail2ban Controller
 %define _unpackaged_files_terminate_build 0
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{python_sitelib}/netspy2ban/
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications/
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/polkit-1/actions/
-mkdir -p $RPM_BUILD_ROOT%{_bindir}
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/pixmaps/
-cp netspy2ban $RPM_BUILD_ROOT%{python_sitelib}/netspy2ban/
-cp fail2ban.py $RPM_BUILD_ROOT%{python_sitelib}/netspy2ban/
-cp mainpanel.py $RPM_BUILD_ROOT%{python_sitelib}/netspy2ban/
-cp netstatus.py $RPM_BUILD_ROOT%{python_sitelib}/netspy2ban/
-cp networkpanel.py $RPM_BUILD_ROOT%{python_sitelib}/netspy2ban/
-cp winmesg.py $RPM_BUILD_ROOT%{python_sitelib}/netspy2ban/
-cp netspy2start $RPM_BUILD_ROOT%{_bindir}
-cp taskbar.py $RPM_BUILD_ROOT%{python_sitelib}/netspy2ban/
-cp -r icons $RPM_BUILD_ROOT%{python_sitelib}/netspy2ban/
-cp netspy2ban.desktop $RPM_BUILD_ROOT%{_datadir}/applications/
-cp netspy2ban.policy $RPM_BUILD_ROOT%{_datadir}/polkit-1/actions/
-cp icons/netspy2ban.png $RPM_BUILD_ROOT%{_datadir}/pixmaps/
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{python_sitelib}/netspy2ban/
+mkdir -p %{buildroot}%{_datadir}/applications/
+mkdir -p %{buildroot}%{_datadir}/polkit-1/actions/
+mkdir -p %{buildroot}%{_bindir}
+mkdir -p %{buildroot}%{_datadir}/pixmaps/
+cp netspy2ban %{buildroot}%{python_sitelib}/netspy2ban/
+cp fail2ban.py %{buildroot}%{python_sitelib}/netspy2ban/
+cp mainpanel.py %{buildroot}%{python_sitelib}/netspy2ban/
+cp netstatus.py %{buildroot}%{python_sitelib}/netspy2ban/
+cp networkpanel.py %{buildroot}%{python_sitelib}/netspy2ban/
+cp winmesg.py %{buildroot}%{python_sitelib}/netspy2ban/
+cp netspy2start %{buildroot}%{_bindir}
+cp taskbar.py %{buildroot}%{python_sitelib}/netspy2ban/
+cp -r icons %{buildroot}%{python_sitelib}/netspy2ban/
+cp netspy2ban.policy %{buildroot}%{_datadir}/polkit-1/actions/
+cp icons/netspy2ban.png %{buildroot}%{_datadir}/pixmaps/
+desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%doc README.md
+%doc README.md 
+%license LICENSE
 %defattr(-,root,root,-)
 %{_bindir}/netspy2start
 %{python_sitelib}/netspy2ban/netspy2ban
