@@ -5,7 +5,7 @@ NetSpy2Ban is a graphic user interface program for Fedora 22 OS. The program ser
 <a href="https://github.com/ftsiadimos/netspy2ban/blob/master/rpms/netspy2ban-1.0-1.fc22.noarch.rpm?raw=true" target="_blank">Download</a> the rpm file package for easy installation. Install the package through the software manager or with the following command through the terminal "sudo dnf install netspy2ban-1.0-1.fc22.noarch.rpm"
 
 <h1 class='liketext'>Overview</h1>
-<br><p align="center">
+<p align="center">
 STATUS: The Status icon shows network speeds and new network cards accessing the system (e.g., if a virtual machine starts, the user will see the virtual card). The bottom window section shows general system information.
 <br><br>
 <img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima1.png" width="500" height="390" alt="image1"/><br>
