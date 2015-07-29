@@ -13,7 +13,7 @@ NETWORKING: The networking icon shows network connections. The Source column sho
 <br><br>
 <img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima2.png" width="500" height="390" alt="image2"/><br>
 <br>
-A popup message will appear on the user's desktop every time an attempt is made to access the user's system
+A popup message will appear on the user's desktop every time an attempt is made to access the user's system.
 <br><br>
 <img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/task1ima.png" width="300" height="140" alt="notify-image1"/><br>
 <br>
