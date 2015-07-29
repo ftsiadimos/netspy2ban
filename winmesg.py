@@ -1,7 +1,6 @@
 #!/usr/bin/python
 """ Popup messages """
 # -*- coding: utf-8 -*-
-#
 # Copyright 2015 Fotios Tsiadimos
 # Licensed under the terms of the GPL License
 # (see License file for details)
