@@ -14,7 +14,7 @@ NETWORKING: The networking icon shows network connections. The Source column sho
 <img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima2.png" width="500" height="390" alt="image2"/><br>
 <br>
 A popup message will appear on the user's desktop every time an attempt is made to access the user's system
-<br>
+<br><br>
 <img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/task1ima.png" width="300" height="140" alt="notify-image1"/><br>
 <br>
 FAIL2BAN: In the General Settings section, the ban-time setting allows the user to specify in seconds how long Fail2Ban will block the IP address. The find-time setting is the moving window within which Fail2Ban keeps track of failed access attempts. In the Service Settings section, from the drop-down menu, a user can select a service. On the left side, the user can enable/disable that service. On the right side the user can specify how many times failed access attempts are made until Fail2Ban blocks the IP address.
