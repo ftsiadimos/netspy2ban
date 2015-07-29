@@ -117,7 +117,8 @@ class Mainpy(wx.Frame):
         info.Copyright = "(C) 2015 Fotios Tsiadimos"
         info.Description = wordwrap(
             "GUI For Fail2Ban and Networking Tool  "
-            " NetSpy2Ban includes a graphic user interface to provide user-friendly functionality for the Fail2Ban service.",
+            " NetSpy2Ban includes a graphic user interface to provide user-friendly functionality for the Fail2Ban service."
+            " For more info see manpage.",
             350, wx.ClientDC(self.panel0))
         info.WebSite = ("https://github.com/ftsiadimos/netspy2ban", "NetSpy2Ban Home Page")
         info.Developers = ["Fotios Tsiadimos"]

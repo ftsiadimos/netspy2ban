@@ -1,5 +1,5 @@
 [Desktop Entry]
-Comment=A user interface for GNU/Linux desktop
+Comment=GUI Networking Tool and Fail2ban Graphic User Interface
 Terminal=false
 Name=NetSpy2Ban
 Exec=/usr/bin/netspy2start

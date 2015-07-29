@@ -1,0 +1,39 @@
+.\" Manpage for NetSpy2Ban.
+.\" Contact ftsiadimos@gmail.com to correct errors or typos.
+.TH man 1 "28 Jul 2015" "1.0" "NetSpy2Ban man page"
+.SH NAME
+
+    NetSpy2Ban - GUI Networking Tool and Fail2ban Graphic User Interface
+
+.SH SYNOPSIS
+    NetSpy2Ban GUI options
+
+.SH DESCRIPTION
+    This manual page documents NetSpy2Ban, a GUI Networking tool and Fail2Ban interface.
+
+    NetSpy2Ban is a graphic user interface program for Fedora 22 OS. The program serves three functions. The first function is to view connected 
+    network cards and their speed. The second is to allow real time monitoring of your network connections. Lastly, NetSpy2Ban includes a graphic
+    user interface to provide user-friendly functionality for the Fail2Ban service.
+
+.SH OPTIONS ON GUI
+    STATUS: The Status icon shows network speeds and new network cards accessing the system (e.g., if a virtual machine starts, the user will see 
+    the virtual card). The bottom window section shows general system information.  
+    
+    NETWORKING: The networking icon shows network connections. The Source column shows the IP address that is starting a connection, and the Destination 
+    column shows the receiving system's IP address. A popup message will appear on the user's desktop every time an attempt is made to access the 
+    user's system. If a user clicks on any of the rows, more information will appear in the bottom window section. 
+
+    FAIL2BAN: In the General Settings section, the ban-time setting allows the user to specify in seconds how long Fail2Ban will block the IP address. 
+    The find-time setting is the moving window within which Fail2Ban keeps track of failed access attempts. In the Service Settings section, from the 
+    drop-down menu, a user can select a service. On the left side, the user can enable/disable that service. On the right side the user can specify 
+    how many times failed access attempts are made until Fail2Ban blocks the IP address. 
+
+.SH SEE ALSO
+    For more information about the Fail2Ban service visit the official website.
+    (www.fail2ban.org)
+  
+.SH AUTHOR
+    NetSpy2Ban was written by Fotios Tsiadimos (ftsiadimos@gmail.com).
+
+    This manual page was written by Fotios Tsiadimos (ftsiadimos@gmail.com).
+
