@@ -6,14 +6,14 @@ Summary: GUI Live Networking Tool and Fail2ban Interface
 Group: Applications/System
 License: GPLv2+ 
 URL: https://github.com/ftsiadimos/netspy2ban
-Source0: https://github.com/ftsiadimos/netspy2ban/blob/master/rpms/netspy2ban-1.0.tar.gz
+Source0: https://raw.githubusercontent.com/ftsiadimos/netspy2ban/master/rpms/netspy2ban-1.0.tar.gz
 Source1: %{name}.desktop
 BuildArch: noarch
 
 Requires: wxPython, fail2ban, python
 
 %description
-NetSpy2Ban is a graphic user interface program for Fedora 22 OS.
+GUI Networking Tool and Fail2ban Graphic User Interface.
 The program serves three functions. The first function is to view
 connected network cards and their speed. The second is to allow 
 real time monitoring of your network connections. Lastly, NetSpy2Ban
@@ -34,6 +34,7 @@ mkdir -p %{buildroot}%{_datadir}/applications/
 mkdir -p %{buildroot}%{_datadir}/polkit-1/actions/
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_datadir}/pixmaps/
+mkdir -p %{buildroot}%{_mandir}/man1/
 cp netspy2ban %{buildroot}%{python_sitelib}/netspy2ban/
 cp fail2ban.py %{buildroot}%{python_sitelib}/netspy2ban/
 cp mainpanel.py %{buildroot}%{python_sitelib}/netspy2ban/
@@ -45,7 +46,10 @@ cp taskbar.py %{buildroot}%{python_sitelib}/netspy2ban/
 cp -r icons %{buildroot}%{python_sitelib}/netspy2ban/
 cp netspy2ban.policy %{buildroot}%{_datadir}/polkit-1/actions/
 cp icons/netspy2ban.png %{buildroot}%{_datadir}/pixmaps/
+gzip -9c netspy2ban.1 > netspy2ban.1.gz 
+install netspy2ban.1.gz  %{buildroot}%{_mandir}/man1/ 
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
+
 
 %clean
 rm -rf %{buildroot}
@@ -61,6 +65,7 @@ rm -rf %{buildroot}
 %{_datadir}/applications/netspy2ban.desktop
 %{_datadir}/polkit-1/actions/netspy2ban.policy
 %{_datadir}/pixmaps/netspy2ban.png
+%{_mandir}/man1/%{name}.*
 
 %post
 systemctl start fail2ban
