@@ -15,7 +15,7 @@ NetSpy2Ban is a graphic user interface program for Fedora 22 OS. The program ser
 <p align="center">
 <img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima2.png" width="500" height="390" alt="image2"/></p><br>
 <br>
-<b>Note:</b> A popup message will appear on the user's desktop every time an attempt is made to access the user's system and when access is banned (see bottom image).
+<b>Note:</b> A popup message will appear on the user's desktop every time an attempt is made to access the user's system and when access is banned (see below and last image).
 <br><br>
 <p align="center">
 <img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/task1ima.png" width="350" height="170" alt="notify-image1"/></p><br>
