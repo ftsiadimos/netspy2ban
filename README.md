@@ -23,7 +23,7 @@ NetSpy2Ban is a graphic user interface program for Fedora 22 OS. The program ser
 <b>FAIL2BAN:</b> In the General Settings section, the ban-time setting allows the user to specify in seconds how long Fail2Ban will block the IP address. The find-time setting is the moving window within which Fail2Ban keeps track of failed access attempts. In the Service Settings section, from the drop-down menu, a user can select a service. On the left side, the user can enable/disable that service. On the right side the user can specify how many times failed access attempts are made until Fail2Ban blocks the IP address.
 <br><br>
 <p align="center">
-<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima3.png" width="500" height="390" alt="imag3"/></p><br>
+<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima3.png" width="450" height="340" alt="imag3"/></p><br>
 <br>
 <p align="center">
 <img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/task2ima.png" width="350" height="170" alt="notify-image2"/></p>
