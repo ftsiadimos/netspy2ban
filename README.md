@@ -8,12 +8,12 @@ NetSpy2Ban is a graphic user interface program for Fedora 22 OS. The program ser
 
 <b>STATUS:</b> The Status icon shows network speeds and new network cards accessing the system (e.g., if a virtual machine starts, the user will see the virtual card). The bottom window section shows general system information.
 <br><br><p align="center">
-<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima1.png" width="500" height="390" alt="image1"/></p><br>
+<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima1.png" width="450" height="340" alt="image1"/></p><br>
 <br>
 <b>NETWORKING:</b> The networking icon shows network connections. The Source column shows the IP address that is starting a connection, and the Destination column shows the receiving system's IP address. If a user clicks on any of the rows, more information will appear in the bottom window section.
 <br><br>
 <p align="center">
-<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima2.png" width="500" height="390" alt="image2"/></p><br>
+<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima2.png" width="450" height="340" alt="image2"/></p><br>
 <br>
 <b>Note:</b> A popup message will appear on the user's desktop every time an attempt is made to access the user's system and when access is banned (see below and last image).
 <br><br>
