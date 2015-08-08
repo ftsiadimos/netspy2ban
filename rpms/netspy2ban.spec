@@ -4,13 +4,15 @@ Release: 1%{?dist}
 Summary: GUI Live Networking Tool and Fail2ban Interface
 
 Group: Applications/System
-License: GPLv2+ 
+License: GPLv3+ 
 URL: https://github.com/ftsiadimos/netspy2ban
 Source0: https://raw.githubusercontent.com/ftsiadimos/netspy2ban/master/rpms/netspy2ban-1.0.tar.gz
-Source1: %{name}.desktop
+Source1: https://raw.githubusercontent.com/ftsiadimos/netspy2ban/master/rpms/%{name}.desktop
 BuildArch: noarch
 
-Requires: wxPython, fail2ban, python
+Requires: python2 
+Requires: wxPython
+Requires: fail2ban
 
 %description
 GUI Networking Tool and Fail2ban Graphic User Interface.
@@ -28,13 +30,12 @@ for the Fail2Ban service.
 %define _unpackaged_files_terminate_build 0
 
 %install
-rm -rf %{buildroot}
-mkdir -p %{buildroot}%{python_sitelib}/netspy2ban/
 mkdir -p %{buildroot}%{_datadir}/applications/
 mkdir -p %{buildroot}%{_datadir}/polkit-1/actions/
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_datadir}/pixmaps/
 mkdir -p %{buildroot}%{_mandir}/man1/
+mkdir -p %{buildroot}%{python_sitelib}/netspy2ban/
 cp netspy2ban %{buildroot}%{python_sitelib}/netspy2ban/
 cp fail2ban.py %{buildroot}%{python_sitelib}/netspy2ban/
 cp mainpanel.py %{buildroot}%{python_sitelib}/netspy2ban/
@@ -47,17 +48,13 @@ cp -r icons %{buildroot}%{python_sitelib}/netspy2ban/
 cp netspy2ban.policy %{buildroot}%{_datadir}/polkit-1/actions/
 cp icons/netspy2ban.png %{buildroot}%{_datadir}/pixmaps/
 gzip -9c netspy2ban.1 > netspy2ban.1.gz 
-install netspy2ban.1.gz  %{buildroot}%{_mandir}/man1/ 
+install -m 644 netspy2ban.1.gz  %{buildroot}%{_mandir}/man1/ 
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
 
-
-%clean
-rm -rf %{buildroot}
 
 %files
 %doc README.md 
 %license LICENSE
-%defattr(-,root,root,-)
 %{_bindir}/netspy2start
 %{python_sitelib}/netspy2ban/netspy2ban
 %{python_sitelib}/netspy2ban/*.py
