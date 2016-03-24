@@ -1,26 +1,38 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <title>Netspy2ban by ftsiadimos</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Netspy2ban by ftsiadimos</title>
   </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Netspy2ban</h1>
-      <h2 class="project-tagline">GUI Networking Tool and Fail2ban Graphic User Interface for Fedora OS</h2>
-      <a href="https://github.com/ftsiadimos/netspy2ban" class="btn">View on GitHub</a>
-      <a href="https://github.com/ftsiadimos/netspy2ban/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/ftsiadimos/netspy2ban/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
 
-    <section class="main-content">
-      <h1>
-<a id="netspy2ban" class="anchor" href="#netspy2ban" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/netspy2ban.png" width="40" height="40" alt="Logo">NetSpy2Ban</h1>
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Netspy2ban</h1>
+          <h2>GUI Networking Tool and Fail2ban Graphic User Interface for Fedora OS</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/ftsiadimos/netspy2ban/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/ftsiadimos/netspy2ban/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/ftsiadimos/netspy2ban" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="netspy2ban" class="anchor" href="#netspy2ban" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><img src="https://raw.githubusercontent.com/ftsiadimos/netspy2ban/master/icons/netspy2ban.png" width="40" height="40" alt="Logo">NetSpy2Ban</h1>
  
 
 <p>NetSpy2Ban is a graphic user interface program for Fedora 22 OS. The program serves three functions. The first function is to view connected network cards and their speed. The second is to allow real time monitoring of your network connections. Lastly, NetSpy2Ban includes a graphic user interface to provide user-friendly functionality for the Fail2Ban service.</p>
@@ -32,35 +44,35 @@
 
 <p><b>STATUS:</b> The Status icon shows network speeds and new network cards accessing the system (e.g., if a virtual machine starts, the user will see the virtual card). The bottom window section shows general system information.
 <br><br></p><p align="center">
-<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima1.png" width="450" height="340" alt="image1"></p><br>
+<img src="https://raw.githubusercontent.com/ftsiadimos/netspy2ban/master/icons/ima1.png" width="450" height="340" alt="image1"></p><br>
 <br>
 <b>NETWORKING:</b> The networking icon shows network connections. The Source column shows the IP address that is starting a connection, and the Destination column shows the receiving system's IP address. If a user clicks on any of the rows, more information will appear in the bottom window section.
 <br><br>
 
 <p align="center">
-<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima2.png" width="450" height="340" alt="image2"></p><br>
+<img src="https://raw.githubusercontent.com/ftsiadimos/netspy2ban/master/icons/ima2.png" width="450" height="340" alt="image2"></p><br>
 <br>
 <b>Note:</b> A popup message will appear on the user's desktop every time an attempt is made to access the user's system and when access is banned (see below and last image).
 <br><br>
 <p align="center">
-<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/task1ima.png" width="350" height="170" alt="notify-image1"></p><br>
+<img src="https://raw.githubusercontent.com/ftsiadimos/netspy2ban/master/icons/task1ima.png" width="350" height="170" alt="notify-image1"></p><br>
 <br>
 <b>FAIL2BAN:</b> In the General Settings section, the ban-time setting allows the user to specify in seconds how long Fail2Ban will block the IP address. The find-time setting is the moving window within which Fail2Ban keeps track of failed access attempts. In the Service Settings section, from the drop-down menu, a user can select a service. On the left side, the user can enable/disable that service. On the right side the user can specify how many times failed access attempts are made until Fail2Ban blocks the IP address.
 <br><br>
 <p align="center">
-<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/ima3.png" width="450" height="340" alt="imag3"></p><br>
+<img src="https://raw.githubusercontent.com/ftsiadimos/netspy2ban/master/icons/ima3.png" width="450" height="340" alt="imag3"></p><br>
 <br>
 <p align="center">
-<img src="https://github.com/ftsiadimos/netspy2ban/blob/master/icons/task2ima.png" width="350" height="170" alt="notify-image2"></p>
+<img src="https://raw.githubusercontent.com/ftsiadimos/netspy2ban/master/icons/task2ima.png" width="350" height="170" alt="notify-image2"></p>
+        </section>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/ftsiadimos/netspy2ban">Netspy2ban</a> is maintained by <a href="https://github.com/ftsiadimos">ftsiadimos</a>.</span>
+        <footer>
+          Netspy2ban is maintained by <a href="https://github.com/ftsiadimos">ftsiadimos</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
-
-    </section>
-
-  
+        
+      </div>
+    </div>
   </body>
 </html>
